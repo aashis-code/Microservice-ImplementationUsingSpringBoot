@@ -1,0 +1,35 @@
+#SERVER PORT
+server:
+  port: 8085
+  
+#EUREKA SETUP
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8083/eureka
+      
+#SPRING 
+spring:
+  application:
+    name: CONFIG-SERVER 
+    
+#GITHUB CLOUD LINK
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/aashis-code/microservice-configuration
+          clone-on-start: true
+          
+          
+          
+          
+          
+          
+          
+          
+          

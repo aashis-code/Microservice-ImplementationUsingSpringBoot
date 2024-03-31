@@ -1,0 +1,47 @@
+#SERVER CONFIGURATION
+server:
+  port: 8082
+  
+ 
+ 
+#DATABASE CONFIGURATION
+spring:
+    application:
+        name: RATING-SERVICE
+    config:
+        import: optional:configserver:http://localhost:8085
+    datasource:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/ratingservice
+        username: root
+        password: root
+        
+#HIBERNATE CONFIGURATION
+ 
+    jpa:
+        properties:
+            hibenate:
+               dialect: org.hibernate.dialect.MySQL8Dialect
+        hibernate.ddl-auto: update
+        show-sql: true  
+         
+
+        
+# EUREKA CLIENT SETUP
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8083/eureka
+
+
+
+
+
+
+
+        

@@ -1,0 +1,109 @@
+#SERVER CONFIGURATION
+server:
+  port: 8080
+  
+
+#DATABASE CONFIGURATION
+spring:
+    application:
+        name: USER-SERVICE
+    datasource:
+        url: jdbc:mysql://localhost:3306/userservice
+        username: root
+        password: root
+        driverClassName: com.mysql.cj.jdbc.Driver
+        
+# Write Url for config server
+    config:
+        import:  optional:configserver:http://localhost:8085
+        
+#    security:
+#     oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: https://dev-85942098.okta.com/oauth2/default 
+#     
+#      client:
+#        registration:
+#          my-internal-client:
+#              provider: okta
+#              authorization-grant-type: client_credentials
+#              scope: internal
+#              client-id: 0oa9n69luvNQzORyd5d7   
+#              client-secret: SY065lN7Q_dtbsvbTR1z_2OY43PvHfXAtRCwxAg1
+#        provider:
+#           okta:
+#             issuer-uri: https://dev-85942098.okta.com/oauth2/default        
+              
+              
+#    profiles:
+#       active: prod
+        
+#HIBERNATE CONFIGURATION
+ 
+    jpa:
+        properties:
+            hibenate:
+               dialect: org.hibernate.dialect.MySQL8Dialect
+        hibernate.ddl-auto: update
+        show-sql: true      
+ 
+ # ACTUATOR CONFIGURATION
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+      web:
+         exposure:
+             include: health, metrics, mappings
+  endpoint:
+    health:
+      show-details: always           
+
+# RESILIENCE4J CONFIGURATION
+resilience4j:
+  circuitbreaker:
+    instances:
+      ratingHotelBreaker:
+        registerHealthIndicator: true
+        event-consumer-buffer-size: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+ 
+  retry:
+    instances:
+      ratingHotelService:
+         max-attempts: 3
+         wait-duration: 5s 
+           
+  ratelimiter:
+    instances:
+      userRateLimit:
+         limitRefreshPeriod: 4s
+         limitForPeriod: 1
+         timeout-duration: 0s      
+        
+ # OKTA CONFIGURATION
+    
+#okta:
+#  oauth2:
+#    issuer: https://dev-85942098.okta.com/oauth2/default
+#    audience: api://default       
+#                          
+        
+#EUREKA SETUP
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    service-url:
+#      defaultZone: http://localhost:8083/eureka
+     
